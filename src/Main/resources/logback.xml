@@ -1,0 +1,26 @@
+<configuration>
+
+    <!-- 1. Bộ in ra màn hình đen Console (ConsoleAppender) -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <!-- Định dạng: Thời gian [Tên tiến trình] Cấp độ log Tên class - Nội dung log -->
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- 2. Bộ ghi lưu vào file vật lý (FileAppender) theo đúng yêu cầu đề bài -->
+    <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+        <file>logs/app.log</file> <!-- File log sẽ sinh ra ở thư mục logs/app.log -->
+        <append>true</append>
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n</pattern>
+        </encoder>
+    </appender>
+
+    <!-- Cấu hình mức sàn bắt log từ INFO trở lên và gắn cả 2 bộ xuất ở trên vào -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE" />
+        <appender-ref ref="FILE" />
+    </root>
+
+</configuration>
