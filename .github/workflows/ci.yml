@@ -1,4 +1,5 @@
 name: Java CI
+
 on:
   push:
     branches: ["main"]
@@ -9,20 +10,21 @@ jobs:
   build:
     runs-on: ubuntu-latest
     steps:
-      -name: Checkout code
-      uses: actions/checkout@v4
+      - name: Checkout code
+        uses: actions/checkout@v4
 
-      -name: Set up JDK 17
-      uses: actions/setup-java@v4
-      with:
-        java-version: '17'
-        distribution: 'temurin'
-        cache: 'maven'
-      name: Test and Package
-      run: mvn clean package
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: 'maven'
 
-      name: Upload Artifact
-      uses: actions/upload-artifact@v4
-      with:
-        name: shipping-jar
-        path: target/*.jar
+      - name: Test and Package
+        run: mvn clean package
+
+      - name: Upload Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: shipping-jar
+          path: target/*.jar
