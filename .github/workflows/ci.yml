@@ -2,13 +2,18 @@ name: Java CI
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "feature/*"]
   pull_request:
     branches: ["main"]
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [ubuntu-latest, windows-latest, macos-latest]
+    runs-on: ${{ matrix.os }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,9 +27,3 @@ jobs:
 
       - name: Test and Package
         run: mvn clean package
-
-      - name: Upload Artifact
-        uses: actions/upload-artifact@v4
-        with:
-          name: shipping-jar
-          path: target/*.jar
