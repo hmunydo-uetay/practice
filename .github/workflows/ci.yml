@@ -1,14 +1,19 @@
-name: Java CI
+name: Java CI/CD
 
 on:
   push:
     branches: [ "**" ]
+    tags:
+      - 'v*'
   pull_request:
     branches: [ "**" ]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -23,15 +28,16 @@ jobs:
       - name: Test and Package
         run: mvn clean package
 
-      - name: Upload JaCoCo Coverage Report
-        uses: actions/upload-artifact@v4
-        if: always()
-        with:
-          name: jacoco-report
-          path: target/site/jacoco/
-
       - name: Upload Artifact
         uses: actions/upload-artifact@v4
         with:
           name: shipping-jar
           path: target/*.jar
+
+      # BƯỚC CỐT LÕI BÀI 8: Tự động publish Release khi có tag phiên bản
+      - name: Create GitHub Release
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: target/*.jar
+          generate_release_notes: true
