@@ -97,8 +97,10 @@
                     </execution>
 
                     <!-- 3. Đặt quy tắc: Nếu Line Coverage dưới 80% thì ép BUILD FAILURE -->
+                    <!-- 3. Đặt quy tắc: Nếu Line Coverage dưới 80% thì ép BUILD FAILURE -->
                     <execution>
                         <id>check</id>
+                        <phase>test</phase> <!-- BẮT BUỘC PHẢI CÓ DÒNG NÀY ĐỂ KÍCH HOẠT LÚC CHẠY TEST -->
                         <goals>
                             <goal>check</goal>
                         </goals>
