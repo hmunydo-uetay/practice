@@ -2,13 +2,14 @@ name: Java CI
 
 on:
   push:
-    branches: ["main"]
+    branches: ["main", "feature/*"]
   pull_request:
     branches: ["main"]
 
 jobs:
   build:
     runs-on: ubuntu-latest
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -22,9 +23,9 @@ jobs:
 
       - name: Test and Package
         run: mvn clean package
-
-      - name: Upload Artifact
+      - name: Upload JaCoCo Coverage Report
         uses: actions/upload-artifact@v4
+        if: always() # Chạy kể cả khi test pass hay fail để luôn có báo cáo tải về xem
         with:
-          name: shipping-jar
-          path: target/*.jar
+          name: jacoco-report-${{ matrix.os }}
+          path: target/site/jacoco/
