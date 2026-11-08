@@ -5,6 +5,7 @@ import org.slf4j.LoggerFactory;
 
 public class ShippingCalculator {
     private static final Logger log= LoggerFactory.getLogger(ShippingCalculator.class);
+    public int Bien_Sai_Quy_Chuan = 10;
     public double calculate(double weight, String type) {
         if (weight <= 0) {
             log.error("Loi du lieu: Can nang khong hop le (weight={})", weight);
