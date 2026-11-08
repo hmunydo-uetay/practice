@@ -27,3 +27,9 @@ jobs:
 
       - name: Test and Package
         run: mvn clean package
+      - name: Upload JaCoCo Coverage Report
+        uses: actions/upload-artifact@v4
+        if: always() # Chạy kể cả khi test pass hay fail để luôn có báo cáo tải về xem
+        with:
+          name: jacoco-report-${{ matrix.os }}
+          path: target/site/jacoco/
