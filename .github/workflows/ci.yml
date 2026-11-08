@@ -1,31 +1,28 @@
-name: Java CI
+name: Checkstyle Review
 
 on:
-  push:
-    branches: ["main", "feature/*"]
   pull_request:
-    branches: ["main"]
+    branches: [ "main" ]
 
 jobs:
-  build:
+  review:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      pull-requests: write
 
     steps:
-      - name: Checkout code
-        uses: actions/checkout@v4
-
-      - name: Set up JDK 17
-        uses: actions/setup-java@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-java@v4
         with:
           java-version: '17'
           distribution: 'temurin'
-          cache: 'maven'
-
-      - name: Test and Package
-        run: mvn clean package
-      - name: Upload JaCoCo Coverage Report
-        uses: actions/upload-artifact@v4
-        if: always() # Chạy kể cả khi test pass hay fail để luôn có báo cáo tải về xem
+      - name: Run Checkstyle
+        run: mvn checkstyle:checkstyle
+      - name: Checkstyle Review Bot
+        uses: dbelyaev/action-checkstyle@v0.5.0
+        if: always()
         with:
-          name: jacoco-report-${{ matrix.os }}
-          path: target/site/jacoco/
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          reporter: github-pr-review
+          level: warning
